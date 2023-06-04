@@ -73,7 +73,7 @@ def fire_evacuation_portrayal(agent):
 
 # Was hoping floorplan could dictate the size of the grid, but seems the grid needs to be specified first, so the size is fixed to 50x50
 # canvas_element = CanvasGrid(fire_evacuation_portrayal, 50, 50, 800, 800)
-canvas_element = CanvasGrid(fire_evacuation_portrayal, 30, 12, 800, 800)
+canvas_element = CanvasGrid(fire_evacuation_portrayal, 30, 30, 800, 800)
 
 # Define the charts on our web interface visualisation
 status_chart = ChartModule(
