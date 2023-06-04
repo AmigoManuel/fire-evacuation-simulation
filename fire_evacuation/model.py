@@ -41,7 +41,7 @@ class FireEvacuation(Model):
         # Load floorplan
         # floorplan = np.genfromtxt(path.join("fire_evacuation/floorplans/", floor_plan_file))
         with open(os.path.join("fire_evacuation/floorplans/", floor_plan_file), "rt") as f:
-            floorplan = np.matrix([line.strip().split() for line in f.readlines()])
+            floorplan = np.matrix([[*line.strip()] for line in f.readlines()])
 
         # Rotate the floorplan so it's interpreted as seen in the text file
         floorplan = np.rot90(floorplan, 3)
