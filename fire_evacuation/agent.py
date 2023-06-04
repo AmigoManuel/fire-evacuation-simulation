@@ -449,11 +449,13 @@ class Human(Agent):
         traversable_pos = [pos for pos in known_pos if self.location_is_traversable(pos)]
 
         while not self.planned_target[1]:
-            print(len(traversable_pos))
-            i = np.random.choice(len(traversable_pos))
-            target_pos = traversable_pos[i]
-            if target_pos in graph_nodes and target_pos != self.pos:
-                self.planned_target = (None, target_pos)
+            if len(traversable_pos) > 0:
+                i = np.random.choice(len(traversable_pos))
+                target_pos = traversable_pos[i]
+                if target_pos in graph_nodes and target_pos != self.pos:
+                    self.planned_target = (None, target_pos)
+            else:
+                break
 
     def attempt_exit_plan(self):
         self.planned_target = (None, None)
