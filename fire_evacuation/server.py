@@ -32,7 +32,10 @@ def fire_evacuation_portrayal(agent):
 
         if agent.get_mobility() == Human.Mobility.INCAPACITATED:
             # Incapacitated
-            portrayal["Shape"] = "fire_evacuation/resources/incapacitated_human.png"
+            if agent.security:
+                portrayal["Shape"] = "fire_evacuation/resources/security_incapacitated_human.png"
+            else:
+                portrayal["Shape"] = "fire_evacuation/resources/incapacitated_human.png"
             portrayal["Layer"] = 6
         elif agent.get_mobility() == Human.Mobility.PANIC:
             # Panicked

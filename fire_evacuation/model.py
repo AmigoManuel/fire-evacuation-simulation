@@ -210,8 +210,15 @@ class FireEvacuation(Model):
                 believes_alarm = np.random.choice([True, False], p=belief_distribution)
 
                 is_security = False
+                collaborates = False
+
                 if security_guards > 0:
                     is_security = True
+                    speed = self.MAX_SPEED
+                    collaborates = True
+                    nervousness = self.MIN_NERVOUSNESS
+                    experience = self.MAX_EXPERIENCE
+                    believes_alarm = True
                     security_guards -= 1
 
                 human = Human(
