@@ -4,8 +4,16 @@ from mesa.visualization.modules import CanvasGrid, ChartModule
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.UserParam import UserSettableParameter
 
+from .agents.dead_human import DeadHuman
+from .agents.door import Door
+from .agents.fire import Fire
+from .agents.fire_exit import FireExit
+from .agents.furniture import Furniture
+from .agents.human import Human
+from .agents.sight import Sight
+from .agents.smoke import Smoke
+from .agents.wall import Wall
 from .model import FireEvacuation
-from .agent import FireExit, Wall, Furniture, Fire, Smoke, Human, Sight, Door, DeadHuman
 
 
 # Creates a visual portrayal of our model in the browser interface

@@ -9,7 +9,12 @@ from mesa.datacollection import DataCollector
 from mesa.space import Coordinate, MultiGrid
 from mesa.time import RandomActivation
 
-from .agent import Human, Wall, FireExit, Furniture, Fire, Door
+from fire_evacuation.agents.door import Door
+from fire_evacuation.agents.fire import Fire
+from fire_evacuation.agents.fire_exit import FireExit
+from fire_evacuation.agents.furniture import Furniture
+from fire_evacuation.agents.human import Human
+from fire_evacuation.agents.wall import Wall
 
 
 class FireEvacuation(Model):
