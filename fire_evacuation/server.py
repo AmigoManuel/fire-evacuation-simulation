@@ -36,13 +36,19 @@ def fire_evacuation_portrayal(agent):
             portrayal["Layer"] = 6
         elif agent.get_mobility() == Human.Mobility.PANIC:
             # Panicked
-            portrayal["Shape"] = "fire_evacuation/resources/panicked_human.png"
+            if agent.security:
+                portrayal["Shape"] = "fire_evacuation/resources/human_security_panicked.png"
+            else:
+                portrayal["Shape"] = "fire_evacuation/resources/panicked_human.png"
         elif agent.is_carrying():
             # Carrying someone
             portrayal["Shape"] = "fire_evacuation/resources/carrying_human.png"
         else:
             # Normal
-            portrayal["Shape"] = "fire_evacuation/resources/human.png"
+            if agent.security:
+                portrayal["Shape"] = "fire_evacuation/resources/human_security.png"
+            else:
+                portrayal["Shape"] = "fire_evacuation/resources/human.png"
     elif type(agent) is Fire:
         portrayal["Shape"] = "fire_evacuation/resources/fire.png"
         portrayal["scale"] = 1
@@ -121,6 +127,7 @@ model_params = {
         "choice", "Floorplan", value=floor_plans[0], choices=floor_plans
     ),
     "human_count": UserSettableParameter("number", "Number Of Human Agents", value=10),
+    "security_count": UserSettableParameter("number", "Number Of Security Agents", value=5),
     "collaboration_percentage": UserSettableParameter(
         "slider", "Percentage Collaborating", value=50, min_value=0, max_value=100, step=10
     ),

@@ -37,6 +37,7 @@ class FireEvacuation(Model):
         self,
         floor_plan_file: str,
         human_count: int,
+        security_count: int,
         collaboration_percentage: float,
         fire_probability: float,
         visualise_vision: bool,
@@ -58,6 +59,7 @@ class FireEvacuation(Model):
         self.width = width
         self.height = height
         self.human_count = human_count
+        self.security_count = security_count
         self.collaboration_percentage = collaboration_percentage
         self.visualise_vision = visualise_vision
         self.fire_probability = fire_probability
@@ -152,6 +154,7 @@ class FireEvacuation(Model):
         number_collaborators = int(round(self.human_count * (self.collaboration_percentage / 100)))
 
         # Start placing human agents
+        security_guards = self.security_count
         for i in range(0, self.human_count):
             if self.random_spawn:  # Place human agents randomly
                 pos = self.grid.find_empty()
@@ -206,6 +209,11 @@ class FireEvacuation(Model):
                 belief_distribution = [0.9, 0.1]  # [Believes, Doesn't Believe]
                 believes_alarm = np.random.choice([True, False], p=belief_distribution)
 
+                is_security = False
+                if security_guards > 0:
+                    is_security = True
+                    security_guards -= 1
+
                 human = Human(
                     pos,
                     health=health,
@@ -216,6 +224,7 @@ class FireEvacuation(Model):
                     experience=experience,
                     believes_alarm=believes_alarm,
                     model=self,
+                    security=is_security
                 )
 
                 self.grid.place_agent(human, pos)

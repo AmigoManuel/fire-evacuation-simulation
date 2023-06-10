@@ -48,6 +48,8 @@ class Human(Agent):
         VERBAL_SUPPORT = 2
         RETREAT = 3
 
+    security = False
+
     MIN_HEALTH = 0.0
     MAX_HEALTH = 1.0
 
@@ -95,6 +97,7 @@ class Human(Agent):
         experience,
         believes_alarm: bool,
         model,
+        security: bool
     ):
         rand_id = get_random_id()
         super().__init__(rand_id, model)
@@ -112,6 +115,8 @@ class Human(Agent):
         self.shock: int = self.MIN_SHOCK
         self.speed = speed
         self.vision = vision
+
+        self.security = security
 
         # Boolean specifying whether this agent will attempt collaboration
         self.collaborates = collaborates
