@@ -4,6 +4,8 @@ from mesa.visualization.modules import CanvasGrid, ChartModule
 from mesa.visualization.ModularVisualization import ModularServer
 from mesa.visualization.UserParam import UserSettableParameter
 
+from .agents.player import Player
+from .agents.security import Security
 from .agents.dead_human import DeadHuman
 from .agents.door import Door
 from .agents.fire import Fire
@@ -26,32 +28,34 @@ def fire_evacuation_portrayal(agent):
     portrayal["x"] = x
     portrayal["y"] = y
 
-    if type(agent) is Human:
+    if type(agent) is Player:
         portrayal["scale"] = 1
         portrayal["Layer"] = 5
 
         if agent.get_mobility() == Human.Mobility.INCAPACITATED:
             # Incapacitated
-            if agent.security:
-                portrayal["Shape"] = "fire_evacuation/resources/security_incapacitated_human.png"
-            else:
-                portrayal["Shape"] = "fire_evacuation/resources/incapacitated_human.png"
+            portrayal["Shape"] = "fire_evacuation/resources/incapacitated_human.png"
             portrayal["Layer"] = 6
         elif agent.get_mobility() == Human.Mobility.PANIC:
-            # Panicked
-            if agent.security:
-                portrayal["Shape"] = "fire_evacuation/resources/human_security_panicked.png"
-            else:
-                portrayal["Shape"] = "fire_evacuation/resources/panicked_human.png"
+            portrayal["Shape"] = "fire_evacuation/resources/panicked_human.png"
+        elif agent.is_carrying():
+            portrayal["Shape"] = "fire_evacuation/resources/carrying_human.png"
+        else:
+            portrayal["Shape"] = "fire_evacuation/resources/human.png"
+    elif type(agent) is Security:
+        portrayal["scale"] = 1
+        portrayal["Layer"] = 5
+
+        if agent.get_mobility() == Human.Mobility.INCAPACITATED:
+            portrayal["Shape"] = "fire_evacuation/resources/security_incapacitated_human.png"
+            portrayal["Layer"] = 6
+        elif agent.get_mobility() == Human.Mobility.PANIC:
+            portrayal["Shape"] = "fire_evacuation/resources/human_security_panicked.png"
         elif agent.is_carrying():
             # Carrying someone
             portrayal["Shape"] = "fire_evacuation/resources/carrying_human.png"
         else:
-            # Normal
-            if agent.security:
-                portrayal["Shape"] = "fire_evacuation/resources/human_security.png"
-            else:
-                portrayal["Shape"] = "fire_evacuation/resources/human.png"
+            portrayal["Shape"] = "fire_evacuation/resources/human_security.png"
     elif type(agent) is Fire:
         portrayal["Shape"] = "fire_evacuation/resources/fire.png"
         portrayal["scale"] = 1
@@ -73,7 +77,7 @@ def fire_evacuation_portrayal(agent):
         portrayal["scale"] = 1
         portrayal["Layer"] = 1
     elif type(agent) is Furniture:
-        portrayal["Shape"] = "fire_evacuation/resources/furniture.png"
+        portrayal["Shape"] = "fire_evacuation/resources/machine.png"
         portrayal["scale"] = 1
         portrayal["Layer"] = 1
     elif type(agent) is DeadHuman:

@@ -256,13 +256,29 @@ class Human(Agent):
         if len(fire_exits) > 0:
             if len(fire_exits) > 1:  # If there is more than one exit known
                 best_distance = None
-                for exit, exit_pos in fire_exits:
-                    length = len(
-                        get_line(self.pos, exit_pos)
-                    )  # Let's use Bresenham's to find the 'closest' exit
-                    if not best_distance or length < best_distance:
+                help_needed = False
+                if self.security:
+                    # soy agente de seguridad y debemo evacuar a todos antes de salir
+                    near_players = []
+                    for location, visible_agents in self.visible_tiles:
+                        for agent in visible_agents:
+                            if isinstance(agent, Human):
+                                if not agent.security:
+                                    near_players.append(agent)
+                    if len(near_players) > 0:
+                        help_needed = True
+                        print("hay humanos que evacuar " + str(near_players[0].pos))
+                        length = len(get_line(self.pos, near_players[0].pos))
                         best_distance = length
-                        self.planned_target = (exit, exit_pos)
+                        self.planned_target = (near_players[0], near_players[0].pos)
+                if not help_needed:
+                    for exit, exit_pos in fire_exits:
+                        length = len(
+                            get_line(self.pos, exit_pos)
+                        )  # Let's use Bresenham's to find the 'closest' exit
+                        if not best_distance or length < best_distance:
+                            best_distance = length
+                            self.planned_target = (exit, exit_pos)
 
             else:
                 self.planned_target = fire_exits.pop()

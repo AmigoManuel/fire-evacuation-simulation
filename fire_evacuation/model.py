@@ -9,6 +9,8 @@ from mesa.datacollection import DataCollector
 from mesa.space import Coordinate, MultiGrid
 from mesa.time import RandomActivation
 
+from fire_evacuation.agents.player import Player
+from fire_evacuation.agents.security import Security
 from fire_evacuation.agents.door import Door
 from fire_evacuation.agents.fire import Fire
 from fire_evacuation.agents.fire_exit import FireExit
@@ -220,22 +222,36 @@ class FireEvacuation(Model):
                     experience = self.MAX_EXPERIENCE
                     believes_alarm = True
                     security_guards -= 1
+                    guard = Security(
+                        pos,
+                        health=health,
+                        speed=speed,
+                        vision=vision,
+                        collaborates=collaborates,
+                        nervousness=nervousness,
+                        experience=experience,
+                        believes_alarm=believes_alarm,
+                        model=self,
+                        security=is_security
+                    )
+                    self.grid.place_agent(guard, pos)
+                    self.schedule.add(guard)
+                else:
+                    player = Player(
+                        pos,
+                        health=health,
+                        speed=speed,
+                        vision=vision,
+                        collaborates=collaborates,
+                        nervousness=nervousness,
+                        experience=experience,
+                        believes_alarm=believes_alarm,
+                        model=self,
+                        security=is_security
+                    )
+                    self.grid.place_agent(player, pos)
+                    self.schedule.add(player)
 
-                human = Human(
-                    pos,
-                    health=health,
-                    speed=speed,
-                    vision=vision,
-                    collaborates=collaborates,
-                    nervousness=nervousness,
-                    experience=experience,
-                    believes_alarm=believes_alarm,
-                    model=self,
-                    security=is_security
-                )
-
-                self.grid.place_agent(human, pos)
-                self.schedule.add(human)
             else:
                 print("No tile empty for human placement!")
 
