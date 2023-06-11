@@ -99,6 +99,7 @@ class Human(Agent):
         model,
         security: bool
     ):
+
         rand_id = get_random_id()
         super().__init__(rand_id, model)
 
@@ -253,33 +254,33 @@ class Human(Agent):
                 if isinstance(agent, FireExit):
                     fire_exits.add((agent, pos))
 
-        if len(fire_exits) > 0:
+        if len(fire_exits) > 0: # Si existe fuego
             if len(fire_exits) > 1:  # If there is more than one exit known
                 best_distance = None
-                help_needed = False
+                help_needed = False # Si otro agente necesita ayuda
                 if self.security and not self.carrying:
                     # soy agente de seguridad y debemo evacuar a todos antes de salir
-                    near_players = []
-                    for location, visible_agents in self.visible_tiles:
-                        for agent in visible_agents:
-                            if isinstance(agent, Human):
-                                if not agent.security:
-                                    near_players.append(agent)
-                    if len(near_players) > 0:
-                        help_needed = True
-                        print("hay humanos que evacuar " + str(near_players[0].pos))
-                        length = len(get_line(self.pos, near_players[0].pos))
-                        best_distance = length
+                    near_players = [] # Humanos que necesitan ayuda
+                    for location, visible_agents in self.visible_tiles: # Las casillas visibles
+                        for agent in visible_agents: # Recorremos los agentes visibles
+                            if isinstance(agent, Human): # Si es humano
+                                if not agent.security: # Y no es agente de seguridad
+                                    near_players.append(agent) # Lo añadimos a la lista de humanos que necesitan ayuda
+                    if len(near_players) > 0: # Si hay humanos que necesitan ayuda
+                        help_needed = True # Flag agente necesita ayuda evita entrar en el if de abajo e ir a la salida
+                        print("hay humanos que evacuar " + str(near_players[0].pos)) # Imprimimos la posición del humano a evacuar
+                        length = len(get_line(self.pos, near_players[0].pos)) # Calculamos la distancia a la que se encuentra el humano a evacuar
+                        best_distance = length # La mejor distancia es la distancia al humano a evacuar
                         self.planned_target = (near_players[0], near_players[0].pos)
-                if not help_needed:
-                    for exit, exit_pos in fire_exits:
+
+                if not help_needed: # Si no hay humanos que necesiten ayuda me dirijo a la salida
+                    for exit, exit_pos in fire_exits: # Recorremos las salidas
                         length = len(
                             get_line(self.pos, exit_pos)
                         )  # Let's use Bresenham's to find the 'closest' exit
                         if not best_distance or length < best_distance:
                             best_distance = length
                             self.planned_target = (exit, exit_pos)
-
             else:
                 self.planned_target = fire_exits.pop()
 
