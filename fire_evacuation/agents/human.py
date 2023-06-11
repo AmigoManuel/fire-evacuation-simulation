@@ -257,7 +257,7 @@ class Human(Agent):
             if len(fire_exits) > 1:  # If there is more than one exit known
                 best_distance = None
                 help_needed = False
-                if self.security:
+                if self.security and not self.carrying:
                     # soy agente de seguridad y debemo evacuar a todos antes de salir
                     near_players = []
                     for location, visible_agents in self.visible_tiles:
